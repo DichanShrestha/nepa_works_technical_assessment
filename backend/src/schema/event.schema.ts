@@ -9,3 +9,13 @@ export const createEventSchema = z.object({
 });
 
 export type EventInput = z.infer<typeof createEventSchema>;
+
+export const getEventsQuerySchema = z.object({
+  page: z.coerce.number().min(1).optional().default(1),
+  limit: z.coerce.number().min(1).max(100).optional().default(10),
+  event_type: z.string().optional(),
+  start_date: z.coerce.date().optional(),
+  end_date: z.coerce.date().optional(),
+});
+
+export type GetEventsQuery = z.infer<typeof getEventsQuerySchema>;
