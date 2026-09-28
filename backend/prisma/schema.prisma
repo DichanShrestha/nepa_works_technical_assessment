@@ -1,0 +1,18 @@
+// Prisma 7 Schema Configuration
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Minimal valid placeholder model for initial database schema migration.
+// Do NOT add the Event model here - designed to be extended for assessment features.
+model HealthCheck {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+
+  @@map("health_checks")
+}
