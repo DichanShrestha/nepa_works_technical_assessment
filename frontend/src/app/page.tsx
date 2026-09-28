@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import DashboardHeader from '@/components/DashboardHeader';
 import AnalyticsCards from '@/components/AnalyticsCards';
 import EventFilters from '@/components/EventFilters';
@@ -68,25 +68,25 @@ export default function DashboardPage() {
     };
   }, [currentPage, filterType, searchQuery, startDate, endDate]);
 
-  const handleFilterChange = (type: string) => {
+  const handleFilterChange = useCallback((type: string) => {
     setFilterType(type);
     setCurrentPage(1); // Reset to first page on filter change
-  };
+  }, []);
 
-  const handleSearchChange = (query: string) => {
+  const handleSearchChange = useCallback((query: string) => {
     setSearchQuery(query);
     setCurrentPage(1);
-  };
+  }, []);
 
-  const handleStartDateChange = (date: string) => {
+  const handleStartDateChange = useCallback((date: string) => {
     setStartDate(date);
     setCurrentPage(1);
-  };
+  }, []);
 
-  const handleEndDateChange = (date: string) => {
+  const handleEndDateChange = useCallback((date: string) => {
     setEndDate(date);
     setCurrentPage(1);
-  };
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#F8FAFC]">
