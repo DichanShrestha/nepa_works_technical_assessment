@@ -1,7 +1,11 @@
 import { Response, Request } from 'express';
 import { createEventSchema, getEventsQuerySchema } from '../schema/event.schema';
 import { sendErrorResponse, sendResponse } from '../utils/response';
-import { createEventService, getEventsService } from '../services/event.service';
+import {
+  createEventService,
+  getEventsService,
+  getEventAnalyticsService,
+} from '../services/event.service';
 
 export async function createEventController(req: Request, res: Response) {
   try {
@@ -34,6 +38,17 @@ export async function getEventsController(req: Request, res: Response) {
     const data = await getEventsService(result.data);
 
     sendResponse(res, { data, message: 'Events retrieved successfully', statusCode: 200 });
+  } catch (error) {
+    console.log(error);
+    sendErrorResponse(res, { message: 'Internal server error', statusCode: 500 });
+  }
+}
+
+export async function getEventAnalyticsController(req: Request, res: Response) {
+  try {
+    const data = await getEventAnalyticsService();
+
+    sendResponse(res, { data, message: 'Analytics retrieved successfully', statusCode: 200 });
   } catch (error) {
     sendErrorResponse(res, { message: 'Internal server error', statusCode: 500 });
   }

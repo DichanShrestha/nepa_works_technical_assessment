@@ -61,3 +61,40 @@ export async function getEventsService(query: GetEventsQuery) {
     throw AppError.internal();
   }
 }
+
+export async function getEventAnalyticsService() {
+  try {
+    const now = new Date();
+    const last24Hours = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+
+    const [countsPerType, totalCount] = await Promise.all([
+      prisma.event.groupBy({
+        by: ['eventType'],
+        _count: { eventType: true },
+        where: {
+          timestamp: { gte: last24Hours },
+        },
+        orderBy: { _count: { eventType: 'desc' } },
+      }),
+      prisma.event.count({
+        where: {
+          timestamp: { gte: last24Hours },
+        },
+      }),
+    ]);
+
+    return {
+      totalEvents: totalCount,
+      eventCountsByType: countsPerType.map((item) => ({
+        eventType: item.eventType,
+        count: item._count.eventType,
+      })),
+      timeWindow: {
+        start: last24Hours,
+        end: now,
+      },
+    };
+  } catch (error) {
+    throw AppError.internal();
+  }
+}

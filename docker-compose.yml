@@ -25,7 +25,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-      target: builder
+      target: dev
     container_name: assessment_backend
     restart: always
     environment:
@@ -48,7 +48,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-      target: builder
+      target: dev
     container_name: assessment_frontend
     restart: always
     environment:

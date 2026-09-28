@@ -8,6 +8,7 @@ import routes from './routes';
 import healthRoutes from './routes/health.routes';
 import { notFoundHandler } from './middlewares/notFound';
 import { errorHandler } from './middlewares/errorHandler';
+import { rateLimiter } from './middlewares/rateLimiter';
 
 const app: Express = express();
 
@@ -29,7 +30,7 @@ app.use(cookieParser());
 
 app.use('/health', healthRoutes);
 
-app.use('/api', routes);
+app.use('/api', rateLimiter, routes);
 
 app.use(notFoundHandler);
 
