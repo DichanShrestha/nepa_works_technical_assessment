@@ -8,11 +8,17 @@ datasource db {
   provider = "postgresql"
 }
 
-// Minimal valid placeholder model for initial database schema migration.
-// Do NOT add the Event model here - designed to be extended for assessment features.
-model HealthCheck {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
+model Event {
+  id         String   @id @default(uuid())
+  userId     String   @map("user_id")
+  eventType  String   @map("event_type")
+  payload    Json
+  timestamp  DateTime
+  createdAt  DateTime @default(now()) @map("created_at")
 
-  @@map("health_checks")
+  @@index([eventType])
+  @@index([timestamp])
+  @@index([userId])
+
+  @@map("events")
 }

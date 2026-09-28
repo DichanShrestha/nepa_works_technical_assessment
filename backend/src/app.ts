@@ -11,10 +11,8 @@ import { errorHandler } from './middlewares/errorHandler';
 
 const app: Express = express();
 
-// Security middleware
 app.use(helmet());
 
-// CORS configuration
 app.use(
   cors({
     origin: env.FRONTEND_URL,
@@ -22,26 +20,19 @@ app.use(
   })
 );
 
-// Request logging
 app.use(morgan(env.NODE_ENV === 'development' ? 'dev' : 'combined'));
 
-// Body parsing
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Cookie parsing
 app.use(cookieParser());
 
-// Direct GET /health endpoint
 app.use('/health', healthRoutes);
 
-// Base /api router structure
 app.use('/api', routes);
 
-// 404 Handler for unknown routes
 app.use(notFoundHandler);
 
-// Centralized Error Handler
 app.use(errorHandler);
 
 export default app;

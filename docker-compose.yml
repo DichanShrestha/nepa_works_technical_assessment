@@ -1,5 +1,3 @@
-name: nepa-works-assessment
-
 services:
   postgres:
     image: postgres:16-alpine
@@ -14,7 +12,11 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-hiring_assessment}"]
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-hiring_assessment}",
+        ]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -44,7 +46,6 @@ services:
     restart: always
     environment:
       PORT: 3000
-      # Browser client requests reach backend on localhost host port (not Docker internal service name)
       NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:4000}
     ports:
       - "3000:3000"

@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction, ErrorRequestHandler } from 'express';
 import { AppError } from '../utils/AppError';
 import { env } from '../config/env';
+import { sendErrorResponse } from '../utils/response';
 
 export const errorHandler: ErrorRequestHandler = (
   err: Error,
@@ -15,11 +16,9 @@ export const errorHandler: ErrorRequestHandler = (
     console.error('Unhandled Error:', err);
   }
 
-  res.status(statusCode).json({
-    success: false,
-    error: {
-      message,
-      ...(env.NODE_ENV === 'development' && { stack: err.stack }),
-    },
+  sendErrorResponse(res, {
+    statusCode,
+    message,
+    ...(env.NODE_ENV === 'development' && { error: { stack: err.stack } }),
   });
 };
